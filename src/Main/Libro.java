@@ -26,6 +26,14 @@ public class Libro {
     public String getGenere() {return genere;}
     public int getValutazione() {return valutazione;}
     public String getStato() {return stato;}
+
+    public void setTitolo(String titolo) { this.titolo = titolo; }
+    public void setAutore(String autore) { this.autore = autore; }
+    public void setIsbn(int isbn) { this.isbn = isbn; }
+    public void setGenere(String genere) { this.genere = genere; }
+    public void setValutazione(int valutazione) { this.valutazione = valutazione; }
+    public void setStato(String stato) { this.stato = stato; }
+
     public String toString() {
         return
                 "titolo='" + titolo + '\'' +
