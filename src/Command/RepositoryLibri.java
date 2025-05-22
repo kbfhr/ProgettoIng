@@ -29,17 +29,19 @@ public class RepositoryLibri {
             throw new RuntimeException();
         }
     }
-
-    public void save(ArrayList<Libro> libri) {
+    public void override (ArrayList<Libro> libri) {
         try {
-            ArrayList<Libro> libriJson = getAll();
-            libriJson.addAll(libri);
             FileWriter filewriter = new FileWriter(filepath);
-            gson.toJson(libriJson, filewriter);
+            gson.toJson(libri, filewriter);
             filewriter.close();
         } catch (IOException e) {
             throw new RuntimeException();
         }
+    }
+    public void save(ArrayList<Libro> libri) {
+        ArrayList<Libro> libriJson = getAll();
+        libriJson.addAll(libri);
+        override(libriJson);
     }
 
     public void update(int isbn,Object attributo,Object valore) throws IOException {
@@ -51,16 +53,15 @@ public class RepositoryLibri {
                     case "titolo" -> l.setTitolo((String) valore);
                     case "autore" -> l.setAutore((String) valore);
                     case "isbn" -> l.setIsbn((int) valore);
-                    case "genere" -> l.setGenere((String) valore);
+                    case "genere" -> l.setGenere((Libro.Genere) valore);
                     case "valutazione" -> l.setValutazione((int) valore);
-                    case "stato" -> l.setStato((String) valore);
+                    case "stato" -> l.setStato((Libro.Stato) valore);
                 }
             }
             if (trovato) {
-                FileWriter filewriter = new FileWriter(filepath);
-                gson.toJson(libriJson, filewriter);
+                override(libriJson);
                 System.out.println(libriJson);
-                filewriter.close();
+
             } else {
                 System.out.println("Libro non trovato");
             }
@@ -68,6 +69,23 @@ public class RepositoryLibri {
         }
     }
     public void remove(int isbn) {
+        ArrayList<Libro> libriJson = getAll();
+        boolean rimosso = false;
+        for(Libro l : libriJson) {
+            if(l.getIsbn() == isbn) {
+                libriJson.remove(l);
+                rimosso = true;
+                break;
+            }
+
+        }
+        if(rimosso){
+            override(libriJson);
+            System.out.println("Libro rimosso con successo");
+        }
+        else    {
+            System.out.println("Libro non trovato");
+        }
 
     }
 }

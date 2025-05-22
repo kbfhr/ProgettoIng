@@ -12,6 +12,6 @@ public class RemoveCommand implements Command {
     @Override
     public void execute() {
         repositoryLibri.remove(isbn);
-        System.out.println("Libro rimosso con successo.");
+
     }
 }

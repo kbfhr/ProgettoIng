@@ -4,11 +4,11 @@ public class Libro {
     String titolo;
     String autore;
     int isbn;
-    String genere;
+    Genere genere;
     int valutazione;
-    String stato;
+    Stato stato;
 
-    public Libro(String titolo, String autore, int isbn, String genere, int valutazione, String stato) {
+    public Libro(String titolo, String autore, int isbn, Genere genere, int valutazione, Stato stato) {
         this.titolo = titolo;
         this.autore = autore;
         this.isbn = isbn;
@@ -16,6 +16,22 @@ public class Libro {
         this.valutazione = valutazione;
         this.stato = stato;
     }
+    public static enum Genere{
+        fantasy,
+        horror,
+        avventura,
+        romanzo,
+        giallo,
+        storico,
+        fantascienza,
+        autobiografia,
+    }
+    public static enum Stato{
+        letto,
+        da_leggere,
+        in_lettura
+    }
+
     public String getTitolo() {
         return titolo;
     }
@@ -23,16 +39,16 @@ public class Libro {
         return autore;
     }
     public int getIsbn() {return isbn;}
-    public String getGenere() {return genere;}
+    public String getGenere() {return genere.toString();}
     public int getValutazione() {return valutazione;}
-    public String getStato() {return stato;}
+    public String getStato() {return stato.toString();}
 
     public void setTitolo(String titolo) { this.titolo = titolo; }
     public void setAutore(String autore) { this.autore = autore; }
     public void setIsbn(int isbn) { this.isbn = isbn; }
-    public void setGenere(String genere) { this.genere = genere; }
+    public void setGenere(Genere genere) { this.genere = genere; }
     public void setValutazione(int valutazione) { this.valutazione = valutazione; }
-    public void setStato(String stato) { this.stato = stato; }
+    public void setStato(Stato stato) { this.stato = stato; }
 
 
     public String toString() {
