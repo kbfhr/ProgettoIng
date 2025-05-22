@@ -24,10 +24,17 @@ public class RepositoryLibri {
             Type arrayType = new TypeToken<ArrayList<Libro>>() {
             }.getType();
             ArrayList<Libro> libriJson = gson.fromJson(fileReader, arrayType);
+        if (libriJson == null) {
+            System.out.println("Nessun libro trovato, creo un nuovo file");
+            return null;
+        } else {
             return libriJson;
+        }
         } catch (IOException e) {
             throw new RuntimeException();
+
         }
+
     }
     public void override (ArrayList<Libro> libri) {
         try {
@@ -40,6 +47,10 @@ public class RepositoryLibri {
     }
     public void save(ArrayList<Libro> libri) {
         ArrayList<Libro> libriJson = getAll();
+        if (libriJson == null) {
+            libriJson = new ArrayList<>();
+            override(libriJson);
+        }
         libriJson.addAll(libri);
         override(libriJson);
     }

@@ -33,7 +33,7 @@ public class GestionLibreria {
         return instance;
     }
     public void rimuoviLibro() {
-        int isbn = inputHandler.leggiInteroRange("Inserisci l'ISBN del libro da rimuovere: ",1,5);
+        int isbn = inputHandler.leggiIntero("Inserisci l'ISBN del libro da rimuovere: ");
         Command removeCommand = new RemoveCommand(repositoryLibri,isbn);
         removeCommand.execute();
 
@@ -46,10 +46,26 @@ public class GestionLibreria {
             String titolo = inputHandler.leggiStringa("Inserisci titolo: ");
             String autore = inputHandler.leggiStringa("Inserisci autore: ");
             int isbn = inputHandler.leggiIntero("Inserisci isbn: ");
-            String genere = inputHandler.leggiStringa("Inserisci genere: ");
-            int valutazione = inputHandler.leggiInteroRange("Inserisci valutazione: ", 1, 5);
+            String genereInput = inputHandler.leggiStringa("Inserisci genere: ").toUpperCase();
+            Libro.Genere genere;
 
-            Libro l = new Libro(titolo, autore, isbn, genere, valutazione, "disponibile");
+            try {
+                genere = Libro.Genere.valueOf(genereInput.toLowerCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Genere non valido. Impostato su ALTRO.");
+                genere = Libro.Genere.altro;
+            }
+            String statoInput = inputHandler.leggiStringa("Inserisci stato lettura: ").toUpperCase().replace(" ", "_");
+            Libro.Stato stato;
+
+            try {
+                stato = Libro.Stato.valueOf(statoInput.toLowerCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Stato non valido. Impostato su DA_LEGGERE.");
+                stato = Libro.Stato.da_leggere;
+            }
+            int valutazione = inputHandler.leggiInteroRange("Inserisci valutazione (1-5): ", 1, 5);
+            Libro l = new Libro(titolo, autore, isbn, genere, valutazione, stato);
             libri.add(l);
 
             String risposta = inputHandler.leggiStringa("Vuoi continuare? (si/no)");
@@ -61,7 +77,7 @@ public class GestionLibreria {
         aggiungiCommand.execute();
 
     }
-    public voi
+
 
     public void aggiornaLibro() {
         int isbn = inputHandler.leggiIntero("Inserisci l'ISBN del libro da aggiornare: ");
@@ -141,17 +157,45 @@ public class GestionLibreria {
         System.out.println(repositoryLibri.getAll());
     }
     public void filtra() {
+        if (repositoryLibri.getAll() == null) {
+            System.out.println("Aggiungi prima un libro.");
+            return;
+        }
         boolean fine = false;
+        boolean applicato = false;
         while (!fine){
             String tipoFiltro = inputHandler.leggiStringa("Aggiungi un filtro (genere, stato): ");
             switch (tipoFiltro.toLowerCase()) {
                 case "genere":
-                    String genere = inputHandler.leggiStringa("Inserisci il genere: ");
-                    filtroManager.aggiungiFiltro("genere", new FiltroPerGenere( genere));
+                    System.out.println("Generi disponibili:");
+                    for (Libro.Genere g : Libro.Genere.values()) {
+                        System.out.println("- " + g.name().toLowerCase());
+                    }
+                    String inputGenere = inputHandler.leggiStringa("Inserisci il genere: ").toLowerCase();
+
+                    try {
+                        Libro.Genere genereEnum = Libro.Genere.valueOf(inputGenere);
+                        filtroManager.aggiungiFiltro("genere", new FiltroPerGenere(inputGenere));
+                        applicato = true;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Genere non valido, filtro ignorato.");
+                    }
                     break;
                 case "stato":
-                    String stato = inputHandler.leggiStringa("Inserisci lo stato (letto, da leggere, in lettura): ");
-                    filtroManager.aggiungiFiltro("stato", new FiltroPerStato(stato));
+                    System.out.println("Stati di lettura disponibili:");
+                    for (Libro.Stato stato : Libro.Stato.values()) {
+                        System.out.println("- " + stato.name().toLowerCase().replace("_", " "));
+                    }
+                    String inputStato = inputHandler.leggiStringa("Inserisci lo stato (letto, da leggere, in lettura): ")
+                            .toLowerCase().replace(" ", "_");
+
+                    try {
+                        Libro.Stato statoEnum = Libro.Stato.valueOf(inputStato);
+                        filtroManager.aggiungiFiltro("stato", new FiltroPerStato(inputStato));
+                        applicato = true;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Stato non valido, filtro ignorato.");
+                    }
                     break;
                 default:
                     System.out.println("Filtro non valido.");
@@ -161,12 +205,18 @@ public class GestionLibreria {
                 fine = true;
             }
         }
-        ArrayList<Libro> libriFiltrati = filtroManager.applica(repositoryLibri.getAll());
-        if  (libriFiltrati.isEmpty()) {
-            System.out.println("Nessun libro trovato con i filtri selezionati.");
-        } else {
-            libriFiltrati.forEach(System.out::println);
+        if (filtroManager.getLibros().isEmpty()) {
+            System.out.println("Nessun filtro selezionato.");
         }
+        else{
+            ArrayList<Libro> libriFiltrati = filtroManager.applica(repositoryLibri.getAll());
+            if  (libriFiltrati.isEmpty()) {
+                System.out.println("Nessun libro trovato con i filtri selezionati.");
+            } else {
+                libriFiltrati.forEach(System.out::println);
+            }
+        }
+
 
         /*Scanner scanner = new Scanner(System.in);
 

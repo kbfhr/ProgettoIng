@@ -48,6 +48,7 @@ public class InputHandler {
         }
     }
 
+
     // Chiudi lo scanner quando non serve più
     private static void closeScanner() {
         scanner.close();

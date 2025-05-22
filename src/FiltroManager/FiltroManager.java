@@ -12,6 +12,9 @@ public class FiltroManager {
     public void aggiungiFiltro(String nome, FiltroLibro filtro) {
         libros.put(nome, filtro);
     }
+    public Map<String, FiltroLibro> getLibros() {
+        return libros;
+    }
     public void removeFiltro(String nome) {
         libros.remove(nome);
     }

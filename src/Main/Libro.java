@@ -25,6 +25,7 @@ public class Libro {
         storico,
         fantascienza,
         autobiografia,
+        altro
     }
     public static enum Stato{
         letto,
