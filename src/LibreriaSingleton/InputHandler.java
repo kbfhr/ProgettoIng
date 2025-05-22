@@ -1,4 +1,4 @@
-package JsonHandler;
+package LibreriaSingleton;
 
 import java.util.Scanner;
 

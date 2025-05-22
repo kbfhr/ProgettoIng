@@ -34,6 +34,7 @@ public class Libro {
     public void setValutazione(int valutazione) { this.valutazione = valutazione; }
     public void setStato(String stato) { this.stato = stato; }
 
+
     public String toString() {
         return
                 "titolo='" + titolo + '\'' +

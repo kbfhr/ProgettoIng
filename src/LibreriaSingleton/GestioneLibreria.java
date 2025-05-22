@@ -1,7 +1,6 @@
 package LibreriaSingleton;
 
 import JsonHandler.GestioneJson;
-import JsonHandler.InputHandler;
 import Main.Libro;
 
 import java.util.ArrayList;

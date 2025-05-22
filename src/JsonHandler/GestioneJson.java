@@ -1,5 +1,6 @@
 package JsonHandler;
 
+import LibreriaSingleton.InputHandler;
 import Main.Libro;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
