@@ -61,12 +61,18 @@ public class RepositoryLibri {
         for (Libro l : libriJson) {
             if (l.getIsbn() == isbn) {
                 switch (attributo.toString()) {
-                    case "titolo" -> l.setTitolo((String) valore);
-                    case "autore" -> l.setAutore((String) valore);
-                    case "isbn" -> l.setIsbn((int) valore);
-                    case "genere" -> l.setGenere((Libro.Genere) valore);
-                    case "valutazione" -> l.setValutazione((int) valore);
-                    case "stato" -> l.setStato((Libro.Stato) valore);
+                    case "titolo" : l.setTitolo((String) valore);
+                            trovato=true;
+                    case "autore" : l.setAutore((String) valore);
+                            trovato=true;
+                    case "isbn" : l.setIsbn((int) valore);
+                        trovato=true;
+                    case "genere" :l.setGenere((Libro.Genere) valore);
+                        trovato=true;
+                    case "valutazione": l.setValutazione((int) valore);
+                        trovato=true;
+                    case "stato" : l.setStato((Libro.Stato) valore);
+                        trovato=true;
                 }
             }
             if (trovato) {

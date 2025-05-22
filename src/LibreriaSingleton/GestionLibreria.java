@@ -111,11 +111,39 @@ public class GestionLibreria {
             }
         }
         Object nuovoValore = null;
-        if(attributo.equals("titolo") || attributo.equals("autore") || attributo.equals("genere") || attributo.equals("stato")) {
+        if(attributo.equals("titolo") || attributo.equals("autore")) {
             nuovoValore = inputHandler.leggiStringa("Inserisci il nuovo valore: ");
         }else if(attributo.equals("valutazione")) {
             nuovoValore = inputHandler.leggiInteroRange("Inserisci la nuova valutazione: ", 1, 5);
 
+        }
+        else if(attributo.equals("genere")) {
+            String genereInput = inputHandler.leggiStringa("Inserisci il nuovo genere: ").toUpperCase();
+            Libro.Genere genere;
+
+            try {
+                genere = Libro.Genere.valueOf(genereInput.toLowerCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Genere non valido. Impostato su ALTRO.");
+                genere = Libro.Genere.altro;
+            }
+            nuovoValore = genere;
+        }
+        else if(attributo.equals("stato")) {
+            String statoInput = inputHandler.leggiStringa("Inserisci il nuovo stato: ").toUpperCase().replace(" ", "_");
+            Libro.Stato stato;
+
+            try {
+                stato = Libro.Stato.valueOf(statoInput.toLowerCase());
+                nuovoValore = stato;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Stato non valido. Impostato su DA_LEGGERE.");
+                stato = Libro.Stato.da_leggere;
+            }
+
+        }
+        else{
+            System.out.println("Attributo non valido");
         }
         Command updateCommand = new UpdateCommand(repositoryLibri,isbn,attributo,nuovoValore);
         updateCommand.execute();
@@ -247,6 +275,6 @@ public class GestionLibreria {
 
     public static void main (String[] args) {
         GestionLibreria gestionLibreria = getInstance("libri.json");
-        gestionLibreria.filtra();
+        gestionLibreria.aggiornaLibro();
     }
 }
