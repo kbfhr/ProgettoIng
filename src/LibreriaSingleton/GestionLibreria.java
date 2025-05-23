@@ -6,6 +6,7 @@ import Command.RemoveCommand;
 import Command.AggiungiCommand;
 import Command.UpdateCommand;
 import Main.Libro;
+import Observer.InterfacciaObserver;
 import Strategy.Ordina;
 
 import java.util.ArrayList;
@@ -33,6 +34,17 @@ public class GestionLibreria {
     }
     public void caricaLibri(String filepath) {
         repositoryLibri = new RepositoryLibri(filepath);
+
+    }
+    public void aggiungiObserver(InterfacciaObserver observer) {
+        repositoryLibri.addObserver(observer);
+    }
+    public ArrayList<Libro> getLibri() {
+        if (repositoryLibri == null) {
+            System.out.println("Aggiungi prima un libro.");
+            return null;
+        }
+        return repositoryLibri.getAll();
     }
     public void rimuoviLibro() {
         int isbn = inputHandler.leggiIntero("Inserisci l'ISBN del libro da rimuovere: ");

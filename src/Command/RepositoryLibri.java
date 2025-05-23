@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import LibreriaSingleton.InputHandler;
 import GUI.InputLibriDialog;
 import GUI.AggiornaLibroDialog;
+import Observer.LibreriaSubject;
 
-public class RepositoryLibri {
+public class RepositoryLibri extends LibreriaSubject{
     private final Gson gson = new Gson();
     private final String filepath ;
     private final InputHandler inputHandler = new InputHandler();
@@ -24,7 +25,7 @@ public class RepositoryLibri {
 
     public ArrayList<Libro> getAll() {
         try {
-            FileReader fileReader = new FileReader("libri.json");
+            FileReader fileReader = new FileReader(filepath);
             Type arrayType = new TypeToken<ArrayList<Libro>>() {
             }.getType();
             ArrayList<Libro> libriJson = gson.fromJson(fileReader, arrayType);
@@ -32,6 +33,8 @@ public class RepositoryLibri {
             System.out.println("Nessun libro trovato, creo un nuovo file");
             return null;
         } else {
+            System.out.println(getObservers());
+            notifyObservers(libriJson);
             return libriJson;
         }
         } catch (IOException e) {
@@ -44,6 +47,7 @@ public class RepositoryLibri {
         try {
             FileWriter filewriter = new FileWriter(filepath);
             gson.toJson(libri, filewriter);
+            notifyObservers(libri);
             filewriter.close();
         } catch (IOException e) {
             throw new RuntimeException();
@@ -195,7 +199,6 @@ public class RepositoryLibri {
             if (AggiornaLibroDialog.updateLibroByTitle(libriJson)) {
                 override(libriJson);
                 System.out.println(libriJson);
-
             } else {
                 System.out.println("Libro non trovato");
             }

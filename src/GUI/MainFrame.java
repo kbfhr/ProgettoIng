@@ -14,6 +14,7 @@ public class MainFrame extends JFrame {
     private GestionLibreria gestionLibreria;
     private ArrayList<Libro> libriCaricati;
     private File selectedFile;
+    private listaLibriGUI libriGUI;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -40,7 +41,26 @@ public class MainFrame extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // Aggiunge la barra dei menu
+
         mainPanel.add(createMenuBar(frame), BorderLayout.NORTH);
+        libriGUI = new listaLibriGUI(libriCaricati);
+
+        System.out.println(gestionLibreria.getLibri());
+
+        this.booksTable = new JTable(libriGUI); // Usa this.booksTable invece di creare una variabile locale
+
+        // Configurazioni tabella
+        this.booksTable.setAutoCreateRowSorter(true);
+        this.booksTable.setFillsViewportHeight(true);
+
+        JScrollPane scrollPane = new JScrollPane(this.booksTable);
+        scrollPane.setPreferredSize(new Dimension(1100, 700));
+
+        // Aggiungi al pannello principale
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+
+
 /*
         // Aggiunge la barra degli strumenti
         mainPanel.add(createToolBar(), BorderLayout.NORTH);
@@ -86,12 +106,17 @@ public class MainFrame extends JFrame {
 
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
+
                 JOptionPane.showMessageDialog(frame, "File selezionato: " + selectedFile.getAbsolutePath());
 
             }
             if (selectedFile != null) {
                 try{
                     gestionLibreria.caricaLibri(selectedFile.getAbsolutePath());
+                    System.out.println(selectedFile.getAbsolutePath());
+                    gestionLibreria.aggiungiObserver(libriGUI);
+                    libriCaricati = gestionLibreria.getLibri();
+                    System.out.println(libriCaricati);
                 }
                 catch (Exception ex){
                     JOptionPane.showMessageDialog(frame, "Errore durante il caricamento del file: " + ex.getMessage());
