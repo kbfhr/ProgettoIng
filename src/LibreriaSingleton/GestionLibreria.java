@@ -47,8 +47,8 @@ public class GestionLibreria {
         return repositoryLibri.getAll();
     }
     public void rimuoviLibro() {
-        int isbn = inputHandler.leggiIntero("Inserisci l'ISBN del libro da rimuovere: ");
-        Command removeCommand = new RemoveCommand(repositoryLibri,isbn);
+
+        Command removeCommand = new RemoveCommand(repositoryLibri);
         removeCommand.execute();
 
     }

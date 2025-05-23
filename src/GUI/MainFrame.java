@@ -136,7 +136,19 @@ public class MainFrame extends JFrame {
         JMenuItem aggiorna = new JMenuItem("Modifica Libro");
         aggiorna.addActionListener(e -> gestionLibreria.aggiornaLibro());
         editMenu.add(aggiorna);
-
+        JMenuItem rimuovi = new JMenuItem("Rimuovi Libro");
+        rimuovi.addActionListener(e -> gestionLibreria.rimuoviLibro());
+        editMenu.add(rimuovi);
+        JMenu filterMenu = new JMenu("Filtri");
+        JMenu genereMenu = new JMenu("Per Genere");
+        for (Libro.Genere genere : Libro.Genere.values()) {
+            JMenuItem genereItem = new JMenuItem(genere.name().toLowerCase());
+            genereItem.addActionListener(e -> {
+                gestionLibreria.
+            });
+            genereMenu.add(genereItem);
+        }
+        filterMenu.add(genereMenu);
         return menuBar;
     }
 }

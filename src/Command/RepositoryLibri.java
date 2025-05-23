@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import LibreriaSingleton.InputHandler;
 import GUI.InputLibriDialog;
 import GUI.AggiornaLibroDialog;
+import GUI.removeDialog;
 import Observer.LibreriaSubject;
 
 public class RepositoryLibri extends LibreriaSubject{
@@ -196,18 +197,20 @@ public class RepositoryLibri extends LibreriaSubject{
 
         }*/
         ArrayList<Libro> libriJson = getAll();
+        System.out.println(libriJson);
             if (AggiornaLibroDialog.updateLibroByTitle(libriJson)) {
+
                 override(libriJson);
-                System.out.println(libriJson);
+
             } else {
                 System.out.println("Libro non trovato");
             }
 
 
     }
-    public void remove(int isbn) {
+    public void remove() {
         ArrayList<Libro> libriJson = getAll();
-        boolean rimosso = false;
+        /*boolean rimosso = false;
         for(Libro l : libriJson) {
             if(l.getIsbn() == isbn) {
                 libriJson.remove(l);
@@ -215,8 +218,8 @@ public class RepositoryLibri extends LibreriaSubject{
                 break;
             }
 
-        }
-        if(rimosso){
+        }*/
+        if(removeDialog.removeLibroByTitle(libriJson)){
             override(libriJson);
             System.out.println("Libro rimosso con successo");
         }

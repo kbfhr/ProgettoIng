@@ -60,6 +60,7 @@ public class AggiornaLibroDialog {
             switch (attributo.toLowerCase()) {
                 case "titolo":
                     String newTitolo = JOptionPane.showInputDialog("Nuovo titolo:", libroToUpdate.getTitolo());
+                    System.out.println(libri);
                     if (newTitolo == null || newTitolo.trim().isEmpty() || newTitolo.matches(".*\\d.*")) {
                         throw new IllegalArgumentException("Titolo non valido!");
                     }
@@ -111,7 +112,7 @@ public class AggiornaLibroDialog {
                     }
                     break;
             }
-
+            System.out.println(libri);
             JOptionPane.showMessageDialog(null,
                     "Libro aggiornato con successo!",
                     "Successo",
