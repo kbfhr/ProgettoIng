@@ -14,23 +14,25 @@ import FiltroManager.*;
 
 public class GestionLibreria {
     private static GestionLibreria instance;
-    private final RepositoryLibri repositoryLibri;
+    private RepositoryLibri repositoryLibri;
     private final Ordina ordina;
     public final InputHandler inputHandler ;
     private FiltroManager filtroManager;
     private final Scanner scanner;
-    private GestionLibreria(String filepath) {
-        this.repositoryLibri = new RepositoryLibri(filepath);
+    private GestionLibreria() {
         this.ordina = new Ordina();
         inputHandler = new InputHandler();
         this.scanner = new Scanner(System.in);
         this.filtroManager = new FiltroManager();
     }
-    public static GestionLibreria getInstance(String filepath) {
+    public static GestionLibreria getInstance() {
         if (instance == null) {
-            instance = new GestionLibreria(filepath);
+            instance = new GestionLibreria();
         }
         return instance;
+    }
+    public void caricaLibri(String filepath) {
+        repositoryLibri = new RepositoryLibri(filepath);
     }
     public void rimuoviLibro() {
         int isbn = inputHandler.leggiIntero("Inserisci l'ISBN del libro da rimuovere: ");
@@ -40,7 +42,7 @@ public class GestionLibreria {
     }
 
     public void aggiungiLibro() {
-        ArrayList<Libro> libri = new ArrayList<>();
+        /*ArrayList<Libro> libri = new ArrayList<>();
         boolean continua = true;
         while(continua) {
             String titolo = inputHandler.leggiStringa("Inserisci titolo: ");
@@ -72,15 +74,15 @@ public class GestionLibreria {
             if(risposta.equals("no")) {
                 continua = false;
             }
-        }
-        Command aggiungiCommand = new AggiungiCommand(repositoryLibri,libri);
+        }*/
+        Command aggiungiCommand = new AggiungiCommand(repositoryLibri);
         aggiungiCommand.execute();
 
     }
 
 
     public void aggiornaLibro() {
-        int isbn = inputHandler.leggiIntero("Inserisci l'ISBN del libro da aggiornare: ");
+        /*int isbn = inputHandler.leggiIntero("Inserisci l'ISBN del libro da aggiornare: ");
         Object attributo = null;
         boolean trovato = false;
         while(!trovato){
@@ -144,10 +146,9 @@ public class GestionLibreria {
         }
         else{
             System.out.println("Attributo non valido");
-        }
-        Command updateCommand = new UpdateCommand(repositoryLibri,isbn,attributo,nuovoValore);
+        }*/
+        Command updateCommand = new UpdateCommand(repositoryLibri);
         updateCommand.execute();
-        System.out.println("Libro aggiornato con successo.");
     }
 
 
@@ -245,36 +246,11 @@ public class GestionLibreria {
             }
         }
 
-
-        /*Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Vuoi filtrare per GENERE? (s/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("s")) {
-            System.out.print("Inserisci il genere: ");
-            String genere = scanner.nextLine();
-            filtroManager.aggiungiFiltro("genere", new FiltroPerGenere(genere));
-        }
-
-        System.out.print("Vuoi filtrare per STATO di lettura? (s/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("s")) {
-            System.out.print("Inserisci lo stato (letto, da leggere, in lettura): ");
-            String stato = scanner.nextLine();
-            filtroManager.aggiungiFiltro("stato", new FiltroPerStato(stato));
-        }
-
-        System.out.println("\n=== Risultati dei filtri attivi ===");
-
-        ArrayList<Libro> libriFiltrati = filtroManager.applica(repositoryLibri.getAll());
-        if (libriFiltrati.isEmpty()) {
-            System.out.println("Nessun libro trovato con i filtri selezionati.");
-        } else {
-            libriFiltrati.forEach(System.out::println);
-        }*/
     }
 
 
-    public static void main (String[] args) {
-        GestionLibreria gestionLibreria = getInstance("libri.json");
+    /*public static void main (String[] args) {
+        GestionLibreria gestionLibreria = getInstance();
         gestionLibreria.aggiornaLibro();
-    }
+    }*/
 }

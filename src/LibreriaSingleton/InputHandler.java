@@ -6,7 +6,7 @@ public class InputHandler {
     private static Scanner scanner = new Scanner(System.in);
 
     // Metodo per leggere stringhe (con controllo non vuoto)
-    protected String leggiStringa(String messaggio) {
+    public String leggiStringa(String messaggio) {
         String input;
         boolean valido = false;
         do {
@@ -25,7 +25,7 @@ public class InputHandler {
     }
 
     // Metodo per leggere interi
-     protected int leggiIntero(String messaggio) {
+    public int leggiIntero(String messaggio) {
         while (true) {
             try {
                 System.out.print(messaggio);
@@ -38,7 +38,7 @@ public class InputHandler {
     }
 
     // Metodo per leggere interi con range
-    protected int leggiInteroRange(String messaggio, int min, int max) {
+    public int leggiInteroRange(String messaggio, int min, int max) {
         while (true) {
             int valore = leggiIntero(messaggio);
             if (valore >= min && valore <= max) {
