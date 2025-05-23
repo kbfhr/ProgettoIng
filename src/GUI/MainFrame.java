@@ -108,6 +108,9 @@ public class MainFrame extends JFrame {
         addBookItem.addActionListener(e -> gestionLibreria.aggiungiLibro());
         editMenu.add(addBookItem);
         menuBar.add(editMenu);
+        JMenuItem aggiorna = new JMenuItem("Modifica Libro");
+        aggiorna.addActionListener(e -> gestionLibreria.aggiornaLibro());
+        editMenu.add(aggiorna);
 
         return menuBar;
     }

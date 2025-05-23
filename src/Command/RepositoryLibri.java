@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import LibreriaSingleton.InputHandler;
+import GUI.InputLibriDialog;
+import GUI.AggiornaLibroDialog;
 
 public class RepositoryLibri {
     private final Gson gson = new Gson();
@@ -48,7 +50,7 @@ public class RepositoryLibri {
         }
     }
     public void save() {
-        ArrayList<Libro> libri = new ArrayList<>();
+        /*ArrayList<Libro> libri = new ArrayList<>();
         boolean continua = true;
         while(continua) {
             String titolo = inputHandler.leggiStringa("Inserisci titolo: ");
@@ -81,17 +83,19 @@ public class RepositoryLibri {
                 continua = false;
             }
         }
-        ArrayList<Libro> libriJson = getAll();
+
         if (libriJson == null) {
             libriJson = new ArrayList<>();
             override(libriJson);
-        }
+        }*/
+        ArrayList<Libro> libriJson = getAll();
+        ArrayList<Libro> libri = InputLibriDialog.showBookInputDialog();
         libriJson.addAll(libri);
         override(libriJson);
     }
 
     public void update() throws IOException {
-        ArrayList<Libro> libriJson = getAll();
+        /*ArrayList<Libro> libriJson = getAll();
         boolean modificato = false;
         int isbn = inputHandler.leggiIntero("Inserisci l'ISBN del libro da aggiornare: ");
         for (Libro l : libriJson) {
@@ -186,8 +190,9 @@ public class RepositoryLibri {
             }
 
 
-        }
-            if (modificato) {
+        }*/
+        ArrayList<Libro> libriJson = getAll();
+            if (AggiornaLibroDialog.updateLibroByTitle(libriJson)) {
                 override(libriJson);
                 System.out.println(libriJson);
 
