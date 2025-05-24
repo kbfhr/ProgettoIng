@@ -5,26 +5,28 @@ import Command.RepositoryLibri;
 import Command.RemoveCommand;
 import Command.AggiungiCommand;
 import Command.UpdateCommand;
+import FiltroStrategy.FiltroPerGenere;
+import FiltroStrategy.FiltroPerStato;
 import Main.Libro;
 import Observer.InterfacciaObserver;
 import Strategy.Ordina;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import FiltroManager.*;
+import FiltroStrategy.*;
 
 public class GestionLibreria {
     private static GestionLibreria instance;
     private RepositoryLibri repositoryLibri;
     private final Ordina ordina;
     public final InputHandler inputHandler ;
-    private FiltroManager filtroManager;
+    private FiltroStrategyConcreto filtroManager;
     private final Scanner scanner;
     private GestionLibreria() {
         this.ordina = new Ordina();
         inputHandler = new InputHandler();
         this.scanner = new Scanner(System.in);
-        this.filtroManager = new FiltroManager();
+        this.filtroManager = new FiltroStrategyConcreto();
     }
     public static GestionLibreria getInstance() {
         if (instance == null) {
@@ -197,8 +199,8 @@ public class GestionLibreria {
         System.out.println("Libri ordinati con successo.");
         System.out.println(repositoryLibri.getAll());
     }
-    public void filtra() {
-        if (repositoryLibri.getAll() == null) {
+    public void filtroPerGenere(String genere) {
+        /*if (repositoryLibri.getAll() == null) {
             System.out.println("Aggiungi prima un libro.");
             return;
         }
@@ -256,9 +258,43 @@ public class GestionLibreria {
             } else {
                 libriFiltrati.forEach(System.out::println);
             }
-        }
-
+        }*/
+        filtroManager.aggiungiFiltro(genere,new FiltroPerGenere(genere));
     }
+    public void filtraPerStato(String stato) {
+        filtroManager.aggiungiFiltro(stato,new FiltroPerStato(stato));
+    }
+    public void applicaFiltri(){
+        ArrayList<Libro> libriFiltrati=filtroManager.applicaFiltri(repositoryLibri.getAll());
+        repositoryLibri.notifyObservers(libriFiltrati);
+    }
+    public void rimuoviFiltro(String valore) {
+        filtroManager.rimuoviFiltro(valore);
+        System.out.println(filtroManager.filtriAttivi());
+        if(filtroManager.filtriAttivi()){
+
+            ArrayList<Libro> libriFiltrati = filtroManager.applicaFiltri(repositoryLibri.getAll());
+            repositoryLibri.notifyObservers(libriFiltrati);
+        } else {
+            repositoryLibri.notifyObservers(repositoryLibri.getAll());
+        }
+        //repositoryLibri.notifyObservers(repositoryLibri.getAll());
+    }
+    /*public void rimuoviFiltroPerStato(String stato) {
+        filtroManager.rimuoviFiltro(stato);
+        if(filtroManager.filtriAttivi()){
+            ArrayList<Libro> libriFiltrati = filtroManager.applicaFiltri(repositoryLibri.getAll());
+            repositoryLibri.notifyObservers(libriFiltrati);
+        } else {
+            repositoryLibri.notifyObservers(repositoryLibri.getAll());
+        }
+        //repositoryLibri.notifyObservers(repositoryLibri.getAll());
+    }*/
+    public void rimuoviTuttiFiltri() {
+        filtroManager.pulisciFiltri();
+        repositoryLibri.notifyObservers(repositoryLibri.getAll());
+    }
+
 
 
     /*public static void main (String[] args) {

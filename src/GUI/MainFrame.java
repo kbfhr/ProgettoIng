@@ -133,23 +133,85 @@ public class MainFrame extends JFrame {
         addBookItem.addActionListener(e -> gestionLibreria.aggiungiLibro());
         editMenu.add(addBookItem);
         menuBar.add(editMenu);
+
+        // Aggiungi le opzioni di modifica
         JMenuItem aggiorna = new JMenuItem("Modifica Libro");
         aggiorna.addActionListener(e -> gestionLibreria.aggiornaLibro());
         editMenu.add(aggiorna);
         JMenuItem rimuovi = new JMenuItem("Rimuovi Libro");
         rimuovi.addActionListener(e -> gestionLibreria.rimuoviLibro());
         editMenu.add(rimuovi);
+
+        // Crea il menu "Filtri"
         JMenu filterMenu = new JMenu("Filtri");
         JMenu genereMenu = new JMenu("Per Genere");
-        for (Libro.Genere genere : Libro.Genere.values()) {
-            JMenuItem genereItem = new JMenuItem(genere.name().toLowerCase());
-            genereItem.addActionListener(e -> {
-                gestionLibreria.
+
+        for (Libro.Genere g : Libro.Genere.values()) {
+            JCheckBoxMenuItem item = new JCheckBoxMenuItem(g.name().toLowerCase());
+            //JMenuItem item = new JMenuItem(g.name().toLowerCase());
+            item.addActionListener(e -> {
+                if (item.isSelected()) {
+                    gestionLibreria.filtroPerGenere(g.name());
+                    gestionLibreria.applicaFiltri();
+                } else {
+                    gestionLibreria.rimuoviFiltro(g.name());
+
+                }
+
             });
-            genereMenu.add(genereItem);
+            genereMenu.add(item);
         }
+
+        // Filtri per Stato
+        JMenu statoMenu = new JMenu("Per Stato");
+        for (Libro.Stato s : Libro.Stato.values()) {
+            String statoName = s.name().toLowerCase().replace("_", " ");
+            JCheckBoxMenuItem item = new JCheckBoxMenuItem(statoName);
+            //JMenuItem item = new JMenuItem(statoName);
+            item.addActionListener(e -> {
+                if( item.isSelected()) {
+
+                    gestionLibreria.filtraPerStato(s.name());
+                    gestionLibreria.applicaFiltri();
+                } else {
+                    gestionLibreria.rimuoviFiltro(s.name());
+
+                }
+
+            });
+            statoMenu.add(item);
+        }
+
+        // Pulisci filtri
+        JMenuItem clearItem = new JMenuItem("Pulisci filtri");
+        clearItem.addActionListener(e -> {
+            gestionLibreria.rimuoviTuttiFiltri();
+            resetAllFilterIcons(genereMenu,statoMenu);
+        });
         filterMenu.add(genereMenu);
+        filterMenu.add(statoMenu);
+        filterMenu.addSeparator();
+        filterMenu.add(clearItem);
+        menuBar.add(filterMenu);
         return menuBar;
+    }
+
+    private void resetAllFilterIcons(JMenu genereMenu, JMenu statoMenu) {
+        // Resetta le icone del menu Generi
+        for (Component comp : genereMenu.getMenuComponents()) {
+            if (comp instanceof JCheckBoxMenuItem) {
+                JCheckBoxMenuItem item = (JCheckBoxMenuItem) comp;
+                item.setSelected(false);
+            }
+        }
+
+        // Resetta le icone del menu Stati
+        for (Component comp : statoMenu.getMenuComponents()) {
+            if (comp instanceof JCheckBoxMenuItem) {
+                JCheckBoxMenuItem item = (JCheckBoxMenuItem) comp;
+                item.setSelected(false);
+            }
+        }
     }
 }
 

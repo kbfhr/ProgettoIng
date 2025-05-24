@@ -1,8 +1,9 @@
-package FiltroManager;
+package FiltroStrategy;
 
+import FiltroManager.FiltroLibro;
 import Main.Libro;
 
-public class FiltroPerStato implements FiltroLibro{
+public class FiltroPerStato implements FiltroStrategy {
     private final String stato;
 
     public FiltroPerStato(String stato) {

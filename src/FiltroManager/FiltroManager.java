@@ -26,4 +26,6 @@ public class FiltroManager {
                 .filter(libro -> libros.values().stream().allMatch(f -> f.filtra(libro)))
                 .toList());
     }
+
+
 }
