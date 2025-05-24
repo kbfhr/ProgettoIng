@@ -36,7 +36,7 @@ public class GestionLibreria {
     }
     public void caricaLibri(String filepath) {
         repositoryLibri = new RepositoryLibri(filepath);
-
+        filtroManager.pulisciFiltri();
     }
     public void aggiungiObserver(InterfacciaObserver observer) {
         repositoryLibri.addObserver(observer);
@@ -200,6 +200,7 @@ public class GestionLibreria {
         System.out.println(repositoryLibri.getAll());
     }
     public void filtroPerGenere(String genere) {
+
         /*if (repositoryLibri.getAll() == null) {
             System.out.println("Aggiungi prima un libro.");
             return;

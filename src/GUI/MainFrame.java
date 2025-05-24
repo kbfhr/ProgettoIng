@@ -82,6 +82,10 @@ public class MainFrame extends JFrame {
 
     private JMenuBar createMenuBar(JFrame frame) {
         JMenuBar menuBar = new JMenuBar();
+        JMenu statoMenu = new JMenu("Per Stato");
+        JMenu filterMenu = new JMenu("Filtri");
+        JMenu genereMenu = new JMenu("Per Genere");
+
 
         // Crea il menu "File"
         JMenu fileMenu = new JMenu("File");
@@ -113,6 +117,7 @@ public class MainFrame extends JFrame {
             if (selectedFile != null) {
                 try{
                     gestionLibreria.caricaLibri(selectedFile.getAbsolutePath());
+                    resetAllFilterIcons(genereMenu, statoMenu);
                     System.out.println(selectedFile.getAbsolutePath());
                     gestionLibreria.aggiungiObserver(libriGUI);
                     libriCaricati = gestionLibreria.getLibri();
@@ -125,14 +130,14 @@ public class MainFrame extends JFrame {
         });
 
         fileMenu.add(saveItem);
-        menuBar.add(fileMenu);
+
 
         // Crea il menu "Modifica"
         JMenu editMenu = new JMenu("Modifica");
         JMenuItem addBookItem = new JMenuItem("Aggiungi Libro");
         addBookItem.addActionListener(e -> gestionLibreria.aggiungiLibro());
         editMenu.add(addBookItem);
-        menuBar.add(editMenu);
+
 
         // Aggiungi le opzioni di modifica
         JMenuItem aggiorna = new JMenuItem("Modifica Libro");
@@ -143,31 +148,33 @@ public class MainFrame extends JFrame {
         editMenu.add(rimuovi);
 
         // Crea il menu "Filtri"
-        JMenu filterMenu = new JMenu("Filtri");
-        JMenu genereMenu = new JMenu("Per Genere");
 
         for (Libro.Genere g : Libro.Genere.values()) {
             JCheckBoxMenuItem item = new JCheckBoxMenuItem(g.name().toLowerCase());
             //JMenuItem item = new JMenuItem(g.name().toLowerCase());
-            item.addActionListener(e -> {
-                if (item.isSelected()) {
-                    gestionLibreria.filtroPerGenere(g.name());
-                    gestionLibreria.applicaFiltri();
-                } else {
-                    gestionLibreria.rimuoviFiltro(g.name());
 
-                }
+            item.addActionListener(e -> {
+
+                    if (item.isSelected()) {
+                        gestionLibreria.filtroPerGenere(g.name());
+                        gestionLibreria.applicaFiltri();
+                    } else {
+                        gestionLibreria.rimuoviFiltro(g.name());
+
+                    }
+
 
             });
             genereMenu.add(item);
         }
 
         // Filtri per Stato
-        JMenu statoMenu = new JMenu("Per Stato");
+
         for (Libro.Stato s : Libro.Stato.values()) {
             String statoName = s.name().toLowerCase().replace("_", " ");
             JCheckBoxMenuItem item = new JCheckBoxMenuItem(statoName);
             //JMenuItem item = new JMenuItem(statoName);
+
             item.addActionListener(e -> {
                 if( item.isSelected()) {
 
@@ -192,6 +199,9 @@ public class MainFrame extends JFrame {
         filterMenu.add(statoMenu);
         filterMenu.addSeparator();
         filterMenu.add(clearItem);
+
+        menuBar.add(fileMenu);
+        menuBar.add(editMenu);
         menuBar.add(filterMenu);
         return menuBar;
     }
